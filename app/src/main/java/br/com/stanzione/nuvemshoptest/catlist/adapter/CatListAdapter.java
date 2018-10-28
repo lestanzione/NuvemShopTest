@@ -19,11 +19,17 @@ import butterknife.ButterKnife;
 
 public class CatListAdapter extends RecyclerView.Adapter<CatListAdapter.ViewHolder> {
 
+    public interface OnCatSelectedListener {
+        void onCatImageSelected(int position);
+    }
+
     private Context context;
     private List<Cat> catList = new ArrayList<>();
+    private OnCatSelectedListener listener;
 
-    public CatListAdapter(Context context) {
+    public CatListAdapter(Context context, OnCatSelectedListener listener) {
         this.context = context;
+        this.listener = listener;
     }
 
     @Override
@@ -42,6 +48,8 @@ public class CatListAdapter extends RecyclerView.Adapter<CatListAdapter.ViewHold
                 .centerCrop()
                 .placeholder(R.drawable.placeholder_image)
                 .into(holder.imageView);
+
+        holder.imageView.setOnClickListener(view -> listener.onCatImageSelected(position));
 
     }
 

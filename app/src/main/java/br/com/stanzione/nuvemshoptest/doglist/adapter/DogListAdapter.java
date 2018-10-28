@@ -19,11 +19,17 @@ import butterknife.ButterKnife;
 
 public class DogListAdapter extends RecyclerView.Adapter<DogListAdapter.ViewHolder> {
 
+    public interface OnDogSelectedListener {
+        void onDogImageSelected(int position);
+    }
+
     private Context context;
     private List<Dog> dogList = new ArrayList<>();
+    private OnDogSelectedListener listener;
 
-    public DogListAdapter(Context context) {
+    public DogListAdapter(Context context, OnDogSelectedListener listener) {
         this.context = context;
+        this.listener = listener;
     }
 
     @Override
@@ -42,6 +48,8 @@ public class DogListAdapter extends RecyclerView.Adapter<DogListAdapter.ViewHold
                 .centerCrop()
                 .placeholder(R.drawable.placeholder_image)
                 .into(holder.imageView);
+
+        holder.imageView.setOnClickListener(view -> listener.onDogImageSelected(position));
 
     }
 

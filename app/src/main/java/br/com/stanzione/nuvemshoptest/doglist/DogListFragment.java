@@ -23,7 +23,7 @@ import br.com.stanzione.nuvemshoptest.doglist.adapter.DogListAdapter;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class DogListFragment extends Fragment implements DogListContract.View {
+public class DogListFragment extends Fragment implements DogListContract.View, DogListAdapter.OnDogSelectedListener {
 
     @Inject
     DogListContract.Presenter presenter;
@@ -35,6 +35,7 @@ public class DogListFragment extends Fragment implements DogListContract.View {
     ProgressBar progressBar;
 
     private DogListAdapter adapter;
+    private List<Dog> dogList;
 
     private Boolean isStarted = false;
     private Boolean isVisible = false;
@@ -84,7 +85,7 @@ public class DogListFragment extends Fragment implements DogListContract.View {
     private void setupUi(View view){
         ButterKnife.bind(this, view);
 
-        adapter = new DogListAdapter(getContext());
+        adapter = new DogListAdapter(getContext(), this);
         dogListRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
         dogListRecyclerView.setAdapter(adapter);
 
@@ -119,6 +120,16 @@ public class DogListFragment extends Fragment implements DogListContract.View {
 
     @Override
     public void showDogList(List<Dog> dogList) {
+        this.dogList = dogList;
         adapter.setItems(dogList);
+    }
+
+    @Override
+    public void onDogImageSelected(int position) {
+        Dog selectedDog = dogList.get(position);
+
+        if(null != selectedDog.getBreedList() && !selectedDog.getBreedList().isEmpty()) {
+            Snackbar.make(dogListRecyclerView, selectedDog.getBreedList().get(0).getName(), Snackbar.LENGTH_LONG).show();
+        }
     }
 }

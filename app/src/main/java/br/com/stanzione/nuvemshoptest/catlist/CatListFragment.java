@@ -24,7 +24,7 @@ import br.com.stanzione.nuvemshoptest.data.Cat;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class CatListFragment extends Fragment implements CatListContract.View {
+public class CatListFragment extends Fragment implements CatListContract.View, CatListAdapter.OnCatSelectedListener {
 
     @Inject
     CatListContract.Presenter presenter;
@@ -36,6 +36,7 @@ public class CatListFragment extends Fragment implements CatListContract.View {
     ProgressBar progressBar;
 
     private CatListAdapter adapter;
+    private List<Cat> catList;
 
     private Boolean isStarted = false;
     private Boolean isVisible = false;
@@ -85,7 +86,7 @@ public class CatListFragment extends Fragment implements CatListContract.View {
     private void setupUi(View view){
         ButterKnife.bind(this, view);
 
-        adapter = new CatListAdapter(getContext());
+        adapter = new CatListAdapter(getContext(), this);
         catListRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
         catListRecyclerView.setAdapter(adapter);
 
@@ -120,6 +121,16 @@ public class CatListFragment extends Fragment implements CatListContract.View {
 
     @Override
     public void showCatList(List<Cat> catList) {
+        this.catList = catList;
         adapter.setItems(catList);
+    }
+
+    @Override
+    public void onCatImageSelected(int position) {
+        Cat selectedCat = catList.get(position);
+
+        if(null != selectedCat.getBreedList() && !selectedCat.getBreedList().isEmpty()) {
+            Snackbar.make(catListRecyclerView, selectedCat.getBreedList().get(0).getName(), Snackbar.LENGTH_LONG).show();
+        }
     }
 }
