@@ -1,12 +1,18 @@
 package br.com.stanzione.nuvemshoptest.doglist;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
+import br.com.stanzione.nuvemshoptest.data.Cat;
 import br.com.stanzione.nuvemshoptest.data.Dog;
+import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.functions.BiFunction;
 import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
+import rx.functions.Func2;
 
 public class DogListPresenter implements DogListContract.Presenter {
 
@@ -25,7 +31,17 @@ public class DogListPresenter implements DogListContract.Presenter {
         view.setProgressBarVisible(true);
 
         compositeDisposable.add(
-                repository.fetchDogList()
+                Observable.zip(repository.fetchDogList(), repository.fetchDogList(),
+                        new BiFunction<List<Dog>, List<Dog>, List<Dog>>() {
+                            @Override
+                            public List<Dog> apply(List<Dog> dogs, List<Dog> dogs2) throws Exception {
+                                List<Dog> finalDogList = new ArrayList<>();
+                                finalDogList.addAll(dogs);
+                                finalDogList.addAll(dogs2);
+                                return finalDogList;
+                            }
+                        }
+                )
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(
