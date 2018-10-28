@@ -3,6 +3,7 @@ package br.com.stanzione.nuvemshoptest.doglist;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -28,7 +29,7 @@ public class DogListFragment extends Fragment implements DogListContract.View {
     DogListContract.Presenter presenter;
 
     @BindView(R.id.dogListRecyclerView)
-    RecyclerView catListRecyclerView;
+    RecyclerView dogListRecyclerView;
 
     @BindView(R.id.progressBar)
     ProgressBar progressBar;
@@ -84,8 +85,8 @@ public class DogListFragment extends Fragment implements DogListContract.View {
         ButterKnife.bind(this, view);
 
         adapter = new DogListAdapter(getContext());
-        catListRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
-        catListRecyclerView.setAdapter(adapter);
+        dogListRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
+        dogListRecyclerView.setAdapter(adapter);
 
     }
 
@@ -104,6 +105,16 @@ public class DogListFragment extends Fragment implements DogListContract.View {
         } else {
             progressBar.setVisibility(View.INVISIBLE);
         }
+    }
+
+    @Override
+    public void showGeneralError() {
+        Snackbar.make(dogListRecyclerView, "General error", Snackbar.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void showNetworkError() {
+        Snackbar.make(dogListRecyclerView, "Network error", Snackbar.LENGTH_LONG).show();
     }
 
     @Override

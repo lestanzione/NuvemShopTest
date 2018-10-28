@@ -1,5 +1,6 @@
 package br.com.stanzione.nuvemshoptest.doglist;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -48,8 +49,6 @@ public class DogListPresenter implements DogListContract.Presenter {
                                 new Consumer<List<Dog>>() {
                                     @Override
                                     public void accept(List<Dog> dogs) throws Exception {
-                                        System.out.println(dogs);
-                                        System.out.println(dogs.size());
                                         view.showDogList(dogs);
                                         view.setProgressBarVisible(false);
                                     }
@@ -57,7 +56,13 @@ public class DogListPresenter implements DogListContract.Presenter {
                                 new Consumer<Throwable>() {
                                     @Override
                                     public void accept(Throwable throwable) throws Exception {
-                                        throwable.printStackTrace();
+                                        view.setProgressBarVisible(false);
+                                        if(throwable instanceof IOException){
+                                            view.showNetworkError();
+                                        }
+                                        else{
+                                            view.showGeneralError();
+                                        }
                                     }
                                 }
                         )

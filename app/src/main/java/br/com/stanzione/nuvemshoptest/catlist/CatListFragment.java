@@ -3,12 +3,14 @@ package br.com.stanzione.nuvemshoptest.catlist;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ProgressBar;
 
 import java.util.List;
@@ -104,6 +106,16 @@ public class CatListFragment extends Fragment implements CatListContract.View {
         } else {
             progressBar.setVisibility(View.INVISIBLE);
         }
+    }
+
+    @Override
+    public void showGeneralError() {
+        Snackbar.make(catListRecyclerView, "General error", Snackbar.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void showNetworkError() {
+        Snackbar.make(catListRecyclerView, "Network error", Snackbar.LENGTH_LONG).show();
     }
 
     @Override

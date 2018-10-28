@@ -1,5 +1,6 @@
 package br.com.stanzione.nuvemshoptest.catlist;
 
+import java.io.IOException;
 import java.util.List;
 
 import br.com.stanzione.nuvemshoptest.data.Cat;
@@ -32,8 +33,6 @@ public class CatListPresenter implements CatListContract.Presenter {
                                 new Consumer<List<Cat>>() {
                                     @Override
                                     public void accept(List<Cat> cats) throws Exception {
-                                        System.out.println(cats);
-                                        System.out.println(cats.size());
                                         view.showCatList(cats);
                                         view.setProgressBarVisible(false);
                                     }
@@ -41,7 +40,13 @@ public class CatListPresenter implements CatListContract.Presenter {
                                 new Consumer<Throwable>() {
                                     @Override
                                     public void accept(Throwable throwable) throws Exception {
-                                        throwable.printStackTrace();
+                                        view.setProgressBarVisible(false);
+                                        if(throwable instanceof IOException){
+                                            view.showNetworkError();
+                                        }
+                                        else{
+                                            view.showGeneralError();
+                                        }
                                     }
                                 }
                         )
