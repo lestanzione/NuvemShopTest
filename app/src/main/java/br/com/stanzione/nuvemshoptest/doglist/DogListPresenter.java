@@ -32,39 +32,12 @@ public class DogListPresenter implements DogListContract.Presenter {
         view.setProgressBarVisible(true);
 
         compositeDisposable.add(
-                Observable.zip(repository.fetchDogList(), repository.fetchDogList(),
-                        new BiFunction<List<Dog>, List<Dog>, List<Dog>>() {
-                            @Override
-                            public List<Dog> apply(List<Dog> dogs, List<Dog> dogs2) throws Exception {
-                                List<Dog> finalDogList = new ArrayList<>();
-                                finalDogList.addAll(dogs);
-                                finalDogList.addAll(dogs2);
-                                return finalDogList;
-                            }
-                        }
-                )
+                Observable.zip(repository.fetchDogList(), repository.fetchDogList(), this::concatDogLists)
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(
-                                new Consumer<List<Dog>>() {
-                                    @Override
-                                    public void accept(List<Dog> dogs) throws Exception {
-                                        view.showDogList(dogs);
-                                        view.setProgressBarVisible(false);
-                                    }
-                                },
-                                new Consumer<Throwable>() {
-                                    @Override
-                                    public void accept(Throwable throwable) throws Exception {
-                                        view.setProgressBarVisible(false);
-                                        if(throwable instanceof IOException){
-                                            view.showNetworkError();
-                                        }
-                                        else{
-                                            view.showGeneralError();
-                                        }
-                                    }
-                                }
+                                this::onDogListReceived,
+                                this::onDogListError
                         )
         );
 
@@ -79,4 +52,27 @@ public class DogListPresenter implements DogListContract.Presenter {
     public void dispose() {
         compositeDisposable.clear();
     }
+
+    private List<Dog> concatDogLists(List<Dog> dogs, List<Dog> dogs2) {
+        List<Dog> finalDogList = new ArrayList<>();
+        finalDogList.addAll(dogs);
+        finalDogList.addAll(dogs2);
+        return finalDogList;
+    }
+
+    private void onDogListReceived(List<Dog> dogs) {
+        view.showDogList(dogs);
+        view.setProgressBarVisible(false);
+    }
+
+    private void onDogListError(Throwable throwable) {
+        view.setProgressBarVisible(false);
+        if(throwable instanceof IOException){
+            view.showNetworkError();
+        }
+        else{
+            view.showGeneralError();
+        }
+    }
+
 }

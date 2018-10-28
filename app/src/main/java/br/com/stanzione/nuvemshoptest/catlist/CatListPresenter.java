@@ -30,25 +30,8 @@ public class CatListPresenter implements CatListContract.Presenter {
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(
-                                new Consumer<List<Cat>>() {
-                                    @Override
-                                    public void accept(List<Cat> cats) throws Exception {
-                                        view.showCatList(cats);
-                                        view.setProgressBarVisible(false);
-                                    }
-                                },
-                                new Consumer<Throwable>() {
-                                    @Override
-                                    public void accept(Throwable throwable) throws Exception {
-                                        view.setProgressBarVisible(false);
-                                        if(throwable instanceof IOException){
-                                            view.showNetworkError();
-                                        }
-                                        else{
-                                            view.showGeneralError();
-                                        }
-                                    }
-                                }
+                                this::onCatListReceived,
+                                this::onCatListError
                         )
         );
 
@@ -62,5 +45,20 @@ public class CatListPresenter implements CatListContract.Presenter {
     @Override
     public void dispose() {
         compositeDisposable.clear();
+    }
+
+    private void onCatListReceived(List<Cat> cats) {
+        view.showCatList(cats);
+        view.setProgressBarVisible(false);
+    }
+
+    private void onCatListError(Throwable throwable) {
+        view.setProgressBarVisible(false);
+        if(throwable instanceof IOException){
+            view.showNetworkError();
+        }
+        else{
+            view.showGeneralError();
+        }
     }
 }
