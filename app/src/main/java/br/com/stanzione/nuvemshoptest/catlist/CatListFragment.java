@@ -35,6 +35,9 @@ public class CatListFragment extends Fragment implements CatListContract.View {
 
     private CatListAdapter adapter;
 
+    private Boolean isStarted = false;
+    private Boolean isVisible = false;
+
 
     public CatListFragment() {}
 
@@ -54,9 +57,19 @@ public class CatListFragment extends Fragment implements CatListContract.View {
     }
 
     @Override
+    public void onStart() {
+        super.onStart();
+        isStarted = true;
+        if (isVisible) {
+            presenter.getCatList();
+        }
+    }
+
+    @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
-        if(isVisibleToUser) {
+        isVisible = isVisibleToUser;
+        if (isVisible && isStarted) {
             presenter.getCatList();
         }
     }
