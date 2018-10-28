@@ -4,9 +4,11 @@ import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 
 import java.util.concurrent.TimeUnit;
 
+import javax.inject.Named;
 import javax.inject.Singleton;
 
 import br.com.stanzione.nuvemshoptest.api.CatApi;
+import br.com.stanzione.nuvemshoptest.api.DogApi;
 import dagger.Module;
 import dagger.Provides;
 import okhttp3.OkHttpClient;
@@ -29,13 +31,22 @@ public class NetworkModule {
 
     @Provides
     @Singleton
-    public String providesBaseUrl() {
+    @Named("catApi")
+    public String providesCatBaseUrl() {
         return "https://api.thecatapi.com/v1/";
     }
 
     @Provides
     @Singleton
-    public Retrofit providesRetrofit(OkHttpClient client, String baseUrl) {
+    @Named("dogApi")
+    public String providesDogBaseUrl() {
+        return "https://api.thedogapi.com/v1/";
+    }
+
+    @Provides
+    @Singleton
+    @Named("catRetrofit")
+    public Retrofit providesCatRetrofit(OkHttpClient client, @Named("catApi") String baseUrl) {
         return new Retrofit.Builder()
                 .client(client)
                 .baseUrl(baseUrl)
@@ -46,8 +57,26 @@ public class NetworkModule {
 
     @Provides
     @Singleton
-    public CatApi providesCatApi(Retrofit retrofit) {
+    @Named("dogRetrofit")
+    public Retrofit providesDogRetrofit(OkHttpClient client, @Named("dogApi") String baseUrl) {
+        return new Retrofit.Builder()
+                .client(client)
+                .baseUrl(baseUrl)
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+    }
+
+    @Provides
+    @Singleton
+    public CatApi providesCatApi(@Named("catRetrofit") Retrofit retrofit) {
         return retrofit.create(CatApi.class);
+    }
+
+    @Provides
+    @Singleton
+    public DogApi providesDogApi(@Named("dogRetrofit")Retrofit retrofit) {
+        return retrofit.create(DogApi.class);
     }
 
 }
