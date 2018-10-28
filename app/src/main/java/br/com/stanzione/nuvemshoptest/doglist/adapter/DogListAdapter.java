@@ -40,6 +40,7 @@ public class DogListAdapter extends RecyclerView.Adapter<DogListAdapter.ViewHold
                 .load(imageUrl)
                 .fit()
                 .centerCrop()
+                .placeholder(R.drawable.placeholder_image)
                 .into(holder.imageView);
 
     }

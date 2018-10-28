@@ -40,6 +40,7 @@ public class CatListAdapter extends RecyclerView.Adapter<CatListAdapter.ViewHold
                 .load(imageUrl)
                 .fit()
                 .centerCrop()
+                .placeholder(R.drawable.placeholder_image)
                 .into(holder.imageView);
 
     }
