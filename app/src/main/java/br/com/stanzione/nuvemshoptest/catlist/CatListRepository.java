@@ -16,6 +16,7 @@ public class CatListRepository implements CatListContract.Repository {
 
     @Override
     public Observable<List<Cat>> fetchCatList() {
-        return null;
+        return catApi.fetchCats(CatApi.LIMIT);
     }
+
 }

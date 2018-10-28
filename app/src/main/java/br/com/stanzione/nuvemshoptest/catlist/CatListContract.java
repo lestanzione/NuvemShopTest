@@ -10,7 +10,7 @@ import io.reactivex.Observable;
 public interface CatListContract {
 
     interface View extends BaseView{
-
+        void showCatList(List<Cat> catList);
     }
 
     interface Presenter extends BasePresenter<View>{
