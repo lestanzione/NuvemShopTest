@@ -126,11 +126,13 @@ public class CatListFragment extends Fragment implements CatListContract.View, C
     }
 
     @Override
+    public void showCatBreed(String breed) {
+        Snackbar.make(catListRecyclerView, breed, Snackbar.LENGTH_LONG).show();
+    }
+
+    @Override
     public void onCatImageSelected(int position) {
         Cat selectedCat = catList.get(position);
-
-        if(null != selectedCat.getBreedList() && !selectedCat.getBreedList().isEmpty()) {
-            Snackbar.make(catListRecyclerView, selectedCat.getBreedList().get(0).getName(), Snackbar.LENGTH_LONG).show();
-        }
+        presenter.getCatBreed(selectedCat);
     }
 }

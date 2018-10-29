@@ -11,10 +11,12 @@ public interface CatListContract {
 
     interface View extends BaseView{
         void showCatList(List<Cat> catList);
+        void showCatBreed(String breed);
     }
 
     interface Presenter extends BasePresenter<View>{
         void getCatList();
+        void getCatBreed(Cat cat);
     }
 
     interface Repository {

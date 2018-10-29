@@ -38,6 +38,13 @@ public class CatListPresenter implements CatListContract.Presenter {
     }
 
     @Override
+    public void getCatBreed(Cat cat) {
+        if(null != cat.getBreedList() && !cat.getBreedList().isEmpty()) {
+            view.showCatBreed(cat.getBreedList().get(0).getName());
+        }
+    }
+
+    @Override
     public void attachView(CatListContract.View view) {
         this.view = view;
     }
