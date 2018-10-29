@@ -110,12 +110,12 @@ public class DogListFragment extends Fragment implements DogListContract.View, D
 
     @Override
     public void showGeneralError() {
-        Snackbar.make(dogListRecyclerView, "General error", Snackbar.LENGTH_LONG).show();
+        Snackbar.make(dogListRecyclerView, getResources().getString(R.string.message_general_error), Snackbar.LENGTH_LONG).show();
     }
 
     @Override
     public void showNetworkError() {
-        Snackbar.make(dogListRecyclerView, "Network error", Snackbar.LENGTH_LONG).show();
+        Snackbar.make(dogListRecyclerView, getResources().getString(R.string.message_network_error), Snackbar.LENGTH_LONG).show();
     }
 
     @Override

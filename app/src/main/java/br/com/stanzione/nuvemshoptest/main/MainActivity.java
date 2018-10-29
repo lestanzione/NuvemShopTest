@@ -32,8 +32,8 @@ public class MainActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        adapter.addOption(new DogListFragment(), "Dog");
-        adapter.addOption(new CatListFragment(), "Cat");
+        adapter.addOption(new DogListFragment(), getResources().getString(R.string.option_dog));
+        adapter.addOption(new CatListFragment(), getResources().getString(R.string.option_cat));
         viewPager.setAdapter(adapter);
 
         tabLayout.setupWithViewPager(viewPager, true);

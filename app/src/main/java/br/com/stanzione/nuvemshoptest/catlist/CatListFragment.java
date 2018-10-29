@@ -111,12 +111,12 @@ public class CatListFragment extends Fragment implements CatListContract.View, C
 
     @Override
     public void showGeneralError() {
-        Snackbar.make(catListRecyclerView, "General error", Snackbar.LENGTH_LONG).show();
+        Snackbar.make(catListRecyclerView, getResources().getString(R.string.message_general_error), Snackbar.LENGTH_LONG).show();
     }
 
     @Override
     public void showNetworkError() {
-        Snackbar.make(catListRecyclerView, "Network error", Snackbar.LENGTH_LONG).show();
+        Snackbar.make(catListRecyclerView, getResources().getString(R.string.message_network_error), Snackbar.LENGTH_LONG).show();
     }
 
     @Override
