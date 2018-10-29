@@ -11,10 +11,12 @@ public interface DogListContract {
 
     interface View extends BaseView {
         void showDogList(List<Dog> dogList);
+        void showDogBreed(String breed);
     }
 
     interface Presenter extends BasePresenter<View> {
         void getDogList();
+        void getDogBreed(Dog dog);
     }
 
     interface Repository {

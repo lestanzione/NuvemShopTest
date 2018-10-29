@@ -125,11 +125,13 @@ public class DogListFragment extends Fragment implements DogListContract.View, D
     }
 
     @Override
+    public void showDogBreed(String breed) {
+        Snackbar.make(dogListRecyclerView, breed, Snackbar.LENGTH_LONG).show();
+    }
+
+    @Override
     public void onDogImageSelected(int position) {
         Dog selectedDog = dogList.get(position);
-
-        if(null != selectedDog.getBreedList() && !selectedDog.getBreedList().isEmpty()) {
-            Snackbar.make(dogListRecyclerView, selectedDog.getBreedList().get(0).getName(), Snackbar.LENGTH_LONG).show();
-        }
+        presenter.getDogBreed(selectedDog);
     }
 }

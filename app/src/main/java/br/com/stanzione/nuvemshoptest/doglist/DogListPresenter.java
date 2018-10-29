@@ -2,18 +2,13 @@ package br.com.stanzione.nuvemshoptest.doglist;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
-import br.com.stanzione.nuvemshoptest.data.Cat;
 import br.com.stanzione.nuvemshoptest.data.Dog;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
-import io.reactivex.functions.BiFunction;
-import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
-import rx.functions.Func2;
 
 public class DogListPresenter implements DogListContract.Presenter {
 
@@ -41,6 +36,13 @@ public class DogListPresenter implements DogListContract.Presenter {
                         )
         );
 
+    }
+
+    @Override
+    public void getDogBreed(Dog dog) {
+        if(null != dog.getBreedList() && !dog.getBreedList().isEmpty()) {
+            view.showDogBreed(dog.getBreedList().get(0).getName());
+        }
     }
 
     @Override
